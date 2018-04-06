@@ -2,7 +2,7 @@ const assert = require('assert');
 const Signature = require('../src/Signature');
 
 describe('Signature', function() {
-  it('it can be constructed', function() {
+  it('can be constructed', function() {
     assert.ok(new Signature('payload', 'sha256', 'key'));
   });
 

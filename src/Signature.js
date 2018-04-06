@@ -1,21 +1,23 @@
 const { createHmac } = require('crypto');
 
-const Signature = function Signature(payload, algorithm, key) {
-  this.signature = createHmac(algorithm, key)
-    .update(payload)
-    .digest("hex");
-};
-
-Signature.prototype.equals = function(signature) {
-  if (typeof signature === 'object') {
-    signature = signature.toString();
+class Signature {
+  constructor(payload, algorithm, key) {
+    this.signature = createHmac(algorithm, key)
+      .update(payload)
+      .digest("hex");
   }
 
-  return signature === this.signature;
-};
+  equals(signature) {
+    if (typeof signature === 'object') {
+      signature = signature.toString();
+    }
 
-Signature.prototype.toString = function() {
-  return this.signature;
-};
+    return signature === this.signature;
+  }
+
+  toString() {
+    return this.signature;
+  }
+}
 
 module.exports = Signature;

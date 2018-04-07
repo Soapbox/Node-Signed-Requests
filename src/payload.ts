@@ -18,7 +18,7 @@ export default class Payload {
   toString() {
     return JSON.stringify({
       id: this.id,
-      method: this.method,
+      method: this.method.toUpperCase(),
       timestamp: this.timestamp,
       uri: this.uri,
       content: this.getProperlyFormedContent(),

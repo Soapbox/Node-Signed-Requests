@@ -14,6 +14,14 @@ describe('Payload', function() {
   });
 
   describe('toString()', function () {
+    it('converts lowercase method to uppercase', function() {
+      const content = 'content';
+      const payload = new Payload(id, method.toLowerCase(), timestamp, uri, content);
+      const expected = String.raw`{"id":"303103f5-3dca-4704-96ad-860717769ec9","method":"GET","timestamp":"2018-04-06 20:34:47","uri":"https://localhost","content":"content"}`;
+
+      assert.strictEqual(payload.toString(), expected);
+    });
+
     it('stringifies a simple payload to the proper string', function() {
       const content = 'content';
       const payload = new Payload(id, method, timestamp, uri, content);

@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --require ts-node/register 'test/**/*.ts'",
-    "build": "tsc"
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "./node_modules/mocha/bin/mocha --require ts-node/register 'test/**/*.ts'"
   },
   "author": "Chris Hayes",
   "license": "MIT",

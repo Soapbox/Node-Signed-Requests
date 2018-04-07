@@ -26,7 +26,7 @@ describe('Signature', function() {
     assert.ok(signature.equals(hmac));
   });
 
-  it('two_signatures_with_different_algorithms_should_not_be_equal', function() {
+  it('two signatures with different algorithms should not be equal', function() {
     const signature1 = new Signature('payload', 'sha256', 'key');
     const signature2 = new Signature('payload', 'sha512', 'key');
 
@@ -49,10 +49,8 @@ describe('Signature', function() {
 
   it('it can be coverted to a string', function() {
     const signature = new Signature('payload', 'sha256', 'key');
+    const expected = '5d98b45c90a207fa998ce639fea6f02ecc8cc3f36fef81d694fb856b4d0a28ca';
 
-    assert.strictEqual(
-      signature.toString(),
-      '5d98b45c90a207fa998ce639fea6f02ecc8cc3f36fef81d694fb856b4d0a28ca'
-    );
+    assert.strictEqual(signature.toString(), expected);
   });
 });

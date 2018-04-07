@@ -1,5 +1,5 @@
-const assert = require('assert');
-const Signature = require('../src/Signature');
+import * as assert from 'assert';
+import Signature from '../src/signature';
 
 describe('Signature', function() {
   it('can be constructed', function() {

@@ -1,11 +1,11 @@
-class Payload {
-  constructor(id, method, timestamp, uri, content) {
-    this.id = id;
-    this.method = method;
-    this.timestamp = timestamp;
-    this.uri = uri;
-    this.content = content;
-  }
+export default class Payload {
+  constructor(
+    private id: string,
+    private method: string,
+    private timestamp: string,
+    private uri: string,
+    private content: string|object
+  ) {}
 
   getProperlyFormedContent() {
     if (typeof this.content === 'object') {
@@ -25,5 +25,3 @@ class Payload {
     });
   }
 }
-
-module.exports = Payload;

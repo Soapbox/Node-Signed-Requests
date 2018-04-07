@@ -1,6 +1,8 @@
-const { createHmac } = require('crypto');
+import { createHmac } from 'crypto';
 
-class Signature {
+export default class Signature {
+  signature: string;
+
   constructor(payload, algorithm, key) {
     this.signature = createHmac(algorithm, key)
       .update(payload)
@@ -19,5 +21,3 @@ class Signature {
     return this.signature;
   }
 }
-
-module.exports = Signature;

@@ -1,5 +1,5 @@
-const assert = require('assert');
-const Payload = require('../src/Payload');
+import * as assert from 'assert';
+import Payload from '../src/payload';
 
 describe('Payload', function() {
   const id = '303103f5-3dca-4704-96ad-860717769ec9';

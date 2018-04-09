@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import * as uuid from 'uuid';
 import { stub, useFakeTimers } from 'sinon';
-import axiosRequestSigner, { Config, defaultHeaders } from '../../src/axios/request-signer-middlware';
+import axiosRequestSigner from '../../src/axios/request-signer-middlware';
 import axios from 'axios';
 import * as nock from 'nock';
+import Config, { defaultHeaders } from '../../src/config';
 
 describe('RequestSignerMiddleware', function() {
   const baseURL = 'https://localhost';
@@ -14,10 +15,9 @@ describe('RequestSignerMiddleware', function() {
   let config: Config;
   let clock;
   let uuidStub;
-  let headers;
 
   beforeEach(() => {
-    headers = {};
+    let headers = {};
     config = { algorithm, key, headers };
     clock = useFakeTimers(new Date(now).getTime());
     uuidStub = stub(uuid, 'v4').callsFake(() => id);

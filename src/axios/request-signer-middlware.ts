@@ -3,24 +3,7 @@ import { AxiosRequestConfig } from "axios";
 import Signature from '../signature';
 import Payload from '../payload';
 import * as moment from 'moment';
-
-export interface Config {
-  algorithm: string,
-  key: string,
-  headers?: {
-    id?: string;
-    timestamp?: string;
-    algorithm?: string;
-    signature?: string;
-  }
-};
-
-export const defaultHeaders = Object.freeze({
-  id: 'x-signed-id',
-  timestamp: 'x-signed-timestamp',
-  algorithm: 'x-algorithm',
-  signature: 'x-signature',
-});
+import Config, { defaultHeaders } from '../config';
 
 function removeTrailingSlash(str: string): string {
   return str.replace(/\/+$/, "");

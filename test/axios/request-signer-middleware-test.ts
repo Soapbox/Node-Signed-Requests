@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import * as uuid from 'uuid';
-import { stub, useFakeTimers } from 'sinon';
-import axiosRequestSigner from '../../src/axios/request-signer-middlware';
 import axios from 'axios';
 import * as nock from 'nock';
-import Config, { defaultHeaders } from '../../src/config';
+import * as uuid from 'uuid';
+import { expect } from 'chai';
+import { stub, useFakeTimers } from 'sinon';
+import Config, { defaultConfig } from '../../src/config';
+import axiosRequestSigner from '../../src/axios/request-signer-middleware';
 
 describe('RequestSignerMiddleware', function() {
   const baseURL = 'https://localhost';
@@ -33,7 +33,7 @@ describe('RequestSignerMiddleware', function() {
       .get('/')
       .reply(function(uri, requestBody) {
         expect(this.req.headers).to.include.all.keys(
-          Object.values(defaultHeaders),
+          Object.values(defaultConfig.headers),
         );
 
         return [200];
@@ -54,7 +54,7 @@ describe('RequestSignerMiddleware', function() {
         .get('/')
         .reply(function(uri, requestBody) {
           expect(this.req.headers).to.include.keys('custom-signed-id');
-          expect(this.req.headers).to.not.include.keys(defaultHeaders.id);
+          expect(this.req.headers).to.not.include.keys(defaultConfig.headers.id);
 
           return [200];
         });
@@ -70,7 +70,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .get('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.id]).to.equal(id);
+          expect(this.req.headers[defaultConfig.headers.id]).to.equal(id);
 
           return [200];
         });
@@ -91,7 +91,7 @@ describe('RequestSignerMiddleware', function() {
         .get('/')
         .reply(function(uri, requestBody) {
           expect(this.req.headers).to.include.keys('custom-signed-timestamp');
-          expect(this.req.headers).to.not.include.keys(defaultHeaders.timestamp);
+          expect(this.req.headers).to.not.include.keys(defaultConfig.headers.timestamp);
 
           return [200];
         });
@@ -107,7 +107,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .get('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.timestamp]).to.equal(now);
+          expect(this.req.headers[defaultConfig.headers.timestamp]).to.equal(now);
 
           return [200];
         });
@@ -128,7 +128,7 @@ describe('RequestSignerMiddleware', function() {
         .get('/')
         .reply(function(uri, requestBody) {
           expect(this.req.headers).to.include.keys('custom-algorithm');
-          expect(this.req.headers).to.not.include.keys(defaultHeaders.algorithm);
+          expect(this.req.headers).to.not.include.keys(defaultConfig.headers.algorithm);
 
           return [200];
         });
@@ -144,7 +144,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .get('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.algorithm]).to.equal(algorithm);
+          expect(this.req.headers[defaultConfig.headers.algorithm]).to.equal(algorithm);
 
           return [200];
         });
@@ -165,7 +165,7 @@ describe('RequestSignerMiddleware', function() {
         .get('/')
         .reply(function(uri, requestBody) {
           expect(this.req.headers).to.include.keys('custom-signature');
-          expect(this.req.headers).to.not.include.keys(defaultHeaders.signature);
+          expect(this.req.headers).to.not.include.keys(defaultConfig.headers.signature);
 
           return [200];
         });
@@ -181,7 +181,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             'b9f912a4fc4b2952a48380579d3e4a1c55c0537ce583b3da7cc9f6c67fe4caa7'
           );
 
@@ -199,7 +199,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             'd35d92484222fce7e5c194381e5f53342caae6fa626cd61e3431bddc549b34e1'
           );
 
@@ -217,7 +217,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             '65ff94dce4894eb306a76ff0d397ec264b1c4980b57afbc3dd9526af242d239b'
           );
 
@@ -235,7 +235,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             'ebd68bfe7ed51c050fb92db098946cd21b7b23be6f682360a5e893840a1dc52f'
           );
 
@@ -253,7 +253,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/poop')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             '0c3f0c81ba1fa3df9d3e0a1d72c4d491125153c0dea8355b6d48fe7ef1a4dacc'
           );
 
@@ -285,7 +285,7 @@ describe('RequestSignerMiddleware', function() {
       nock(baseURL)
         .post('/poop/')
         .reply(function(uri, requestBody) {
-          expect(this.req.headers[defaultHeaders.signature]).to.equal(
+          expect(this.req.headers[defaultConfig.headers.signature]).to.equal(
             '0c3f0c81ba1fa3df9d3e0a1d72c4d491125153c0dea8355b6d48fe7ef1a4dacc'
           );
 

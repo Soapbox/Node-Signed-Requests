@@ -1,16 +1,16 @@
 import * as uuid from 'uuid';
-import { AxiosRequestConfig } from "axios";
-import Signature from '../signature';
-import Payload from '../payload';
 import * as moment from 'moment';
-import Config, { defaultHeaders } from '../config';
+import Payload from '../payload';
+import Signature from '../signature';
+import { AxiosRequestConfig } from "axios";
+import Config, { mergeOverridesWithDefaults } from '../config';
 
 function removeTrailingSlash(str: string): string {
   return str.replace(/\/+$/, "");
 }
 
-export default function(config?: Config): any {
-  config.headers = Object.assign({}, defaultHeaders, config.headers);
+export default function(overrides?: Config): any {
+  const config = mergeOverridesWithDefaults(overrides);
 
   return (requestConfig: AxiosRequestConfig): AxiosRequestConfig => {
     const id = uuid.v4();

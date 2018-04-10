@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as uuid from "uuid";
 import { expect } from "chai";
-import { createServer } from "restify";
+import { createServer, plugins } from "restify";
 import { stub, useFakeTimers } from "sinon";
 import { IConfig, defaultConfig } from "../../src/config";
 import axiosRequestSigner from "../../src/axios/request-signer-middleware";
@@ -24,6 +24,7 @@ describe("RequestVerifierMiddleware", () => {
     config = { algorithm, key };
 
     server = createServer();
+    server.use(plugins.bodyParser());
     server.use(restifyRequestVerifier(config));
     server.listen(port);
 
@@ -51,7 +52,7 @@ describe("RequestVerifierMiddleware", () => {
 
     axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
-    const response = await axiosInstance.post("/");
+    const response = await axiosInstance.post("/", { body: "truth" });
 
     expect(response.status).to.equal(200);
   });
@@ -70,7 +71,7 @@ describe("RequestVerifierMiddleware", () => {
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(
@@ -92,7 +93,7 @@ describe("RequestVerifierMiddleware", () => {
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(
@@ -114,7 +115,7 @@ describe("RequestVerifierMiddleware", () => {
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(
@@ -136,7 +137,7 @@ describe("RequestVerifierMiddleware", () => {
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(
@@ -158,7 +159,7 @@ describe("RequestVerifierMiddleware", () => {
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(
@@ -182,7 +183,7 @@ describe("RequestVerifierMiddleware", () => {
       });
 
       try {
-        await axiosInstance.post("/");
+        await axiosInstance.post("/", { body: "truth" });
       } catch ({ response }) {
         expect(response.status).to.equal(400);
         expect(response.data).to.deep.equal(

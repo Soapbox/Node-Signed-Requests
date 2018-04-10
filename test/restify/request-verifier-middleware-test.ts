@@ -24,7 +24,7 @@ describe("RequestVerifierMiddleware", () => {
   beforeEach(() => {
     config = { algorithm, key };
 
-    server = createServer();
+    server = createServer({ ignoreTrailingSlash: true } as any);
     server.use(plugins.bodyParser());
     server.use(restifyRequestVerifier(config));
     server.listen(port, host);
@@ -45,17 +45,45 @@ describe("RequestVerifierMiddleware", () => {
     uuidStub.restore();
   });
 
-  it("allows request when signature is valid", async () => {
-    server.post("/", (req, res, next) => {
-      res.send(200);
-      next();
+  describe("allows valid requests", () => {
+    it("validates signature when request signature is valid", async () => {
+      server.post("/", (req, res, next) => {
+        res.send(200);
+        next();
+      });
+
+      axiosInstance.interceptors.request.use(axiosRequestSigner(config));
+
+      const response = await axiosInstance.post("/", { body: "truth" });
+
+      expect(response.status).to.equal(200);
     });
 
-    axiosInstance.interceptors.request.use(axiosRequestSigner(config));
+    it("validates signature when URL has a trailing slash", async () => {
+      server.post("/endpoint", (req, res, next) => {
+        res.send(200);
+        next();
+      });
 
-    const response = await axiosInstance.post("/", { body: "truth" });
+      axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 
-    expect(response.status).to.equal(200);
+      const response = await axiosInstance.post("/endpoint/", { body: "truth" });
+
+      expect(response.status).to.equal(200);
+    });
+
+    it("validates signature when payload has unicode characters", async () => {
+      server.post("/", (req, res, next) => {
+        res.send(200);
+        next();
+      });
+
+      axiosInstance.interceptors.request.use(axiosRequestSigner(config));
+
+      const response = await axiosInstance.post("/", { body: "💩" });
+
+      expect(response.status).to.equal(200);
+    });
   });
 
   describe("denies invalid requests", () => {

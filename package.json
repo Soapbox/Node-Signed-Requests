@@ -33,6 +33,7 @@
     "restify-errors": "^6.0.0",
     "sinon": "^4.5.0",
     "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.8.1"
   },
   "dependencies": {

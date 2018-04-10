@@ -1,20 +1,20 @@
-import * as uuid from 'uuid';
-import * as moment from 'moment';
-import Payload from '../payload';
-import Signature from '../signature';
+import * as uuid from "uuid";
+import * as moment from "moment";
+import Payload from "../payload";
+import Signature from "../signature";
 import { AxiosRequestConfig } from "axios";
-import Config, { mergeOverridesWithDefaults } from '../config';
+import { IConfig, mergeOverridesWithDefaults } from "../config";
 
 function removeTrailingSlash(str: string): string {
   return str.replace(/\/+$/, "");
 }
 
-export default function(overrides?: Config): any {
+export default function(overrides?: IConfig): (c: AxiosRequestConfig) => AxiosRequestConfig {
   const config = mergeOverridesWithDefaults(overrides);
 
   return (requestConfig: AxiosRequestConfig): AxiosRequestConfig => {
     const id = uuid.v4();
-    const timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
+    const timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
     const url = removeTrailingSlash(`${requestConfig.baseURL}${requestConfig.url}`);
     const payload = new Payload(id, requestConfig.method, timestamp, url, requestConfig.data);
     const signature = new Signature(payload.toString(), config.algorithm, config.key);

@@ -1,23 +1,23 @@
-import { createHmac } from 'crypto';
+import { createHmac } from "crypto";
 
 export default class Signature {
-  signature: string;
+  private signature: string;
 
-  constructor(payload, algorithm, key) {
+  constructor(payload: string, algorithm: string, key: string) {
     this.signature = createHmac(algorithm, key)
       .update(payload)
       .digest("hex");
   }
 
-  equals(signature) {
-    if (typeof signature === 'object') {
+  public equals(signature: Signature|string): boolean {
+    if (signature instanceof Signature) {
       signature = signature.toString();
     }
 
     return signature === this.signature;
   }
 
-  toString() {
+  public toString(): string {
     return this.signature;
   }
 }

@@ -4,18 +4,10 @@ export default class Payload {
     private method: string,
     private timestamp: string,
     private uri: string,
-    private content: string|object
+    private content: string|object,
   ) {}
 
-  getProperlyFormedContent() {
-    if (typeof this.content === 'object') {
-      return JSON.stringify(this.content);
-    }
-
-    return this.content;
-  }
-
-  toString() {
+  public toString(): string {
     return JSON.stringify({
       id: this.id,
       method: this.method.toUpperCase(),
@@ -23,5 +15,13 @@ export default class Payload {
       uri: this.uri,
       content: this.getProperlyFormedContent(),
     });
+  }
+
+  private getProperlyFormedContent(): string {
+    if (typeof this.content === "object") {
+      return JSON.stringify(this.content);
+    }
+
+    return this.content;
   }
 }

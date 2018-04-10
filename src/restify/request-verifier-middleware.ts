@@ -1,12 +1,9 @@
 import Payload from "../../src/payload";
-import Signature from "../../src/signature";
-import { Request, RequestHandler, Response, Next } from "restify";
-import { IConfig, mergeOverridesWithDefaults } from "../config";
 import * as errors from "restify-errors";
-
-function removeTrailingSlash(str: string): string {
-  return str.replace(/\/+$/, "");
-}
+import Signature from "../../src/signature";
+import { removeTrailingSlash } from "../utils";
+import { IConfig, mergeOverridesWithDefaults } from "../config";
+import { Request, RequestHandler, Response, Next } from "restify";
 
 export default function(overrides?: IConfig): RequestHandler {
   const config = mergeOverridesWithDefaults(overrides);

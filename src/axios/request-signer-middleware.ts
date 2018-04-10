@@ -3,11 +3,8 @@ import * as moment from "moment";
 import Payload from "../payload";
 import Signature from "../signature";
 import { AxiosRequestConfig } from "axios";
+import { removeTrailingSlash } from "../utils";
 import { IConfig, mergeOverridesWithDefaults } from "../config";
-
-function removeTrailingSlash(str: string): string {
-  return str.replace(/\/+$/, "");
-}
 
 export default function(overrides?: IConfig): (c: AxiosRequestConfig) => AxiosRequestConfig {
   const config = mergeOverridesWithDefaults(overrides);

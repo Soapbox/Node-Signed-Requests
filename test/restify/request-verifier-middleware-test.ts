@@ -1,15 +1,16 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import * as uuid from "uuid";
 import { expect } from "chai";
-import { createServer, plugins } from "restify";
+import { createServer, plugins, Server } from "restify";
 import { stub, useFakeTimers } from "sinon";
 import { IConfig, defaultConfig } from "../../src/config";
 import axiosRequestSigner from "../../src/axios/request-signer-middleware";
 import restifyRequestVerifier from "../../src/restify/request-verifier-middleware";
 
 describe("RequestVerifierMiddleware", () => {
+  const host = "127.0.0.1";
   const port = 8080;
-  const baseURL = `http://[::]:${port}`;
+  const baseURL = `http://${host}:${port}`;
   const id = "303103f5-3dca-4704-96ad-860717769ec9";
   const now = "2001-01-01 00:00:00";
   const algorithm = "sha256";
@@ -17,8 +18,8 @@ describe("RequestVerifierMiddleware", () => {
   let config: IConfig;
   let clock;
   let uuidStub;
-  let server;
-  let axiosInstance;
+  let server: Server;
+  let axiosInstance: AxiosInstance;
 
   beforeEach(() => {
     config = { algorithm, key };
@@ -26,7 +27,7 @@ describe("RequestVerifierMiddleware", () => {
     server = createServer();
     server.use(plugins.bodyParser());
     server.use(restifyRequestVerifier(config));
-    server.listen(port);
+    server.listen(port, host);
 
     axiosInstance = axios.create({ baseURL });
 

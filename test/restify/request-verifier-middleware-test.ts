@@ -161,6 +161,9 @@ describe("RequestVerifierMiddleware", () => {
         await axiosInstance.post("/");
       } catch ({ response }) {
         expect(response.status).to.equal(400);
+        expect(response.data).to.deep.equal(
+          { code: "BadRequest", message: "The provided signature is not valid"},
+        );
       }
     });
 
@@ -182,6 +185,9 @@ describe("RequestVerifierMiddleware", () => {
         await axiosInstance.post("/");
       } catch ({ response }) {
         expect(response.status).to.equal(400);
+        expect(response.data).to.deep.equal(
+          { code: "BadRequest", message: "The request has expired"},
+        );
       }
     });
   });

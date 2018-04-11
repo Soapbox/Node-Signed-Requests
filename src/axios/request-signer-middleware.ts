@@ -6,7 +6,7 @@ import { AxiosRequestConfig } from "axios";
 import { removeTrailingSlash } from "../utils";
 import { IConfig, mergeOverridesWithDefaults } from "../config";
 
-export default function(overrides?: IConfig): (c: AxiosRequestConfig) => AxiosRequestConfig {
+export default function(overrides?: IConfig): any {
   const config = mergeOverridesWithDefaults(overrides);
 
   return (requestConfig: AxiosRequestConfig): AxiosRequestConfig => {

@@ -1,5 +1,5 @@
-import Payload from "../../src/payload";
-import Signature from "../../src/signature";
+import Payload from "../payload";
+import Signature from "../signature";
 import { removeTrailingSlash } from "../utils";
 import { BadRequestError } from "restify-errors";
 import ExpiredRequestError from "../errors/expired-request";

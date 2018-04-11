@@ -25,6 +25,10 @@ export default function(overrides?: IConfig): RequestHandler {
       const now = new Date().getTime();
       const requestIssuedAt = new Date(req.header(config.headers.timestamp)).getTime();
 
+      if (isNaN(requestIssuedAt)) {
+        throw new BadRequestError("timestamp header value must be a valid timestamp");
+      }
+
       if ((now - requestIssuedAt) > (config.toleranceInSeconds * 1000)) {
         throw new ExpiredRequestError("The request has expired");
       }

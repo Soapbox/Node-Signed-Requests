@@ -152,6 +152,28 @@ describe("RequestVerifierMiddleware", () => {
       }
     });
 
+    it("returns 400 when request timestamp header value is not a valid timestamp", async () => {
+      server.post("/", (req, res, next) => {
+        // tslint:disable-next-line:no-unused-expression
+        expect(false).to.be.true; // this should never be called
+      });
+
+      axiosInstance.interceptors.request.use((requestConfig) => {
+        requestConfig.headers[defaultConfig.headers.timestamp] = "not a timestamp";
+        return requestConfig;
+      });
+      axiosInstance.interceptors.request.use(axiosRequestSigner(config));
+
+      try {
+        await axiosInstance.post("/", { body: "truth" });
+      } catch ({ response }) {
+        expect(response.status).to.equal(400);
+        expect(response.data).to.deep.equal(
+          { code: "BadRequest", message: "timestamp header value must be a valid timestamp"},
+        );
+      }
+    });
+
     it("returns 400 when request algorithm header is missing", async () => {
       server.post("/", (req, res, next) => {
         // tslint:disable-next-line:no-unused-expression
@@ -203,7 +225,7 @@ describe("RequestVerifierMiddleware", () => {
       });
 
       axiosInstance.interceptors.request.use((requestConfig) => {
-        requestConfig.headers[defaultConfig.headers.timestamp] = "invalid-signature";
+        requestConfig.headers[defaultConfig.headers.signature] = "invalid-signature";
         return requestConfig;
       });
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));

@@ -3,7 +3,7 @@ import * as uuid from "uuid";
 import { expect } from "chai";
 import { createServer, plugins, Server } from "restify";
 import { stub, useFakeTimers } from "sinon";
-import { IConfig, defaultConfig } from "../../src/config";
+import { IConfig, defaultConfig, mergeOverridesWithDefaults } from "../../src/config";
 import axiosRequestSigner from "../../src/axios/request-signer-middleware";
 import restifyRequestVerifier from "../../src/restify/request-verifier-middleware";
 
@@ -51,6 +51,27 @@ describe("RequestVerifierMiddleware", () => {
         res.send(200);
         next();
       });
+
+      axiosInstance.interceptors.request.use(axiosRequestSigner(config));
+
+      const response = await axiosInstance.post("/", { body: "truth" });
+
+      expect(response.status).to.equal(200);
+    });
+
+    it("validates signature when request signature is valid and headers are uppercase", async () => {
+      server.post("/", (req, res, next) => {
+        res.send(200);
+        next();
+      });
+
+      config = mergeOverridesWithDefaults(config);
+
+      for (const k in config.headers) {
+        if (config.headers.hasOwnProperty(k)) {
+          config.headers[k] = config.headers[k].toUpperCase();
+        }
+      }
 
       axiosInstance.interceptors.request.use(axiosRequestSigner(config));
 

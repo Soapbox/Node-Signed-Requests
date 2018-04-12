@@ -11,6 +11,14 @@
   },
   "author": "Chris Hayes",
   "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "deepmerge": "^2.1.0",
+    "moment": "^2.22.0",
+    "restify": "^7.1.0",
+    "restify-errors": "^6.0.0",
+    "uuid": "^3.2.1"
+  },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/chai": "^4.1.2",
@@ -23,18 +31,12 @@
     "@types/restify-errors": "^4.3.2",
     "@types/sinon": "^4.3.1",
     "@types/uuid": "^3.4.3",
-    "axios": "^0.18.0",
     "chai": "^4.1.2",
-    "deepmerge": "^2.1.0",
     "mocha": "^5.0.5",
-    "moment": "^2.22.0",
     "nock": "^9.2.3",
-    "restify": "^7.1.0",
-    "restify-errors": "^6.0.0",
     "sinon": "^4.5.0",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
-    "typescript": "^2.8.1",
-    "uuid": "^3.2.1"
+    "typescript": "^2.8.1"
   }
 }

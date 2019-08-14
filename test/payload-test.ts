@@ -94,5 +94,13 @@ describe("Payload", () => {
 
       assert.strictEqual(payload.toString(), expected);
     });
+
+    it("stringifies a json payload when there is no content", () => {
+      const payload = new Payload(id, method, timestamp, uri, undefined);
+      // tslint:disable-next-line:max-line-length
+      const expected = String.raw`{"id":"303103f5-3dca-4704-96ad-860717769ec9","method":"GET","timestamp":"2018-04-06 20:34:47","uri":"https://localhost","content":""}`;
+
+      assert.strictEqual(payload.toString(), expected);
+    });
   });
 });

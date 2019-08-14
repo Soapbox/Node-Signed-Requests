@@ -22,6 +22,10 @@ export default class Payload {
       return JSON.stringify(this.content);
     }
 
+    if (this.content === undefined) {
+      return "";
+    }
+
     return this.content;
   }
 }
